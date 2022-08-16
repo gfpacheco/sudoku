@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 
 import { Difficulty } from '../components/App';
 
-export interface Fetch<T> {
+export interface NewGameState {
   loading: boolean;
   error?: string;
-  data?: T;
+  initialState?: number[];
 }
 
 export default function useNewGame(difficulty: Difficulty) {
-  const [newGame, setNewGame] = useState<Fetch<number[][]>>({
+  const [newGame, setNewGame] = useState<NewGameState>({
     loading: true,
   });
 
@@ -17,10 +17,10 @@ export default function useNewGame(difficulty: Difficulty) {
     console.log('difficulty', difficulty);
     fetch(`https://sugoku.herokuapp.com/board?difficulty=${difficulty}`)
       .then(res => res.json())
-      .then(data => {
+      .then((data: { board: number[][] }) => {
         setNewGame({
           loading: false,
-          data: data.board,
+          initialState: data.board.flat(),
         });
       })
       .catch(error => {
