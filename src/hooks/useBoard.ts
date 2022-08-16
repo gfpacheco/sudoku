@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import mapRawToBoxAndCellIndex from '../lib/mapRawToBoxAndCellIndex';
 import { CellState } from './useGameState';
 
 export default function useBoard(raw: CellState[]) {
@@ -9,9 +10,7 @@ export default function useBoard(raw: CellState[]) {
     const columns = createNineArrays();
 
     raw.forEach((cell, index) => {
-      const boxIndex =
-        (Math.floor((index % 9) / 3) % 9) + Math.floor(index / 27) * 3;
-      boxes[boxIndex].push(cell);
+      boxes[mapRawToBoxAndCellIndex(index).box].push(cell);
 
       const rowIndex = Math.floor(index / 9);
       rows[rowIndex].push(cell);

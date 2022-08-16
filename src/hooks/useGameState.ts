@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Difficulty } from '../components/App';
 import useBoard from './useBoard';
+import useCellSelection from './useCellSelection';
 import useNewGame from './useNewGame';
 
 export interface GameState {
@@ -11,11 +12,14 @@ export interface GameState {
   boxes: CellState[][];
   rows: CellState[][];
   columns: CellState[][];
+  onCellSelect: (box: number, cell: number, reset: boolean) => void;
+  resetSelection: () => void;
 }
 
 export interface CellState {
   value: number;
   fixed: boolean;
+  selected: boolean;
 }
 
 export default function useGameState(difficulty: Difficulty): GameState {
@@ -30,6 +34,8 @@ export default function useGameState(difficulty: Difficulty): GameState {
 
   const { boxes, rows, columns } = useBoard(raw);
 
+  const cellSelection = useCellSelection(setRaw);
+
   return {
     loading,
     error,
@@ -37,5 +43,6 @@ export default function useGameState(difficulty: Difficulty): GameState {
     boxes,
     rows,
     columns,
+    ...cellSelection,
   };
 }

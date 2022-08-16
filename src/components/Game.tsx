@@ -7,7 +7,8 @@ export interface GameProps extends React.ComponentPropsWithoutRef<'div'> {
 }
 
 export default function Game({ difficulty, ...rest }: GameProps) {
-  const { loading, error, boxes } = useGameState(difficulty);
+  const { loading, error, boxes, onCellSelect, resetSelection } =
+    useGameState(difficulty);
 
   if (loading) {
     return <div {...rest}>Loading...</div>;
@@ -17,5 +18,12 @@ export default function Game({ difficulty, ...rest }: GameProps) {
     return <div {...rest}>Error: {error}</div>;
   }
 
-  return <Board boxes={boxes} {...rest} />;
+  return (
+    <Board
+      boxes={boxes}
+      onCellSelect={onCellSelect}
+      resetSelection={resetSelection}
+      {...rest}
+    />
+  );
 }

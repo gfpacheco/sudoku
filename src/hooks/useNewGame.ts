@@ -26,6 +26,7 @@ export default function useNewGame(difficulty: Difficulty) {
               ({
                 value,
                 fixed: value !== 0,
+                selected: false,
               } as CellState),
           ),
         });
