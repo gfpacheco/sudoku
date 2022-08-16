@@ -1,21 +1,23 @@
 import { useMemo } from 'react';
 
-export default function useBoard(raw: number[]) {
+import { CellState } from './useGameState';
+
+export default function useBoard(raw: CellState[]) {
   return useMemo(() => {
     const boxes = createNineArrays();
     const rows = createNineArrays();
     const columns = createNineArrays();
 
-    raw.forEach((value, index) => {
+    raw.forEach((cell, index) => {
       const boxIndex =
         (Math.floor((index % 9) / 3) % 9) + Math.floor(index / 27) * 3;
-      boxes[boxIndex].push(value);
+      boxes[boxIndex].push(cell);
 
       const rowIndex = Math.floor(index / 9);
-      rows[rowIndex].push(value);
+      rows[rowIndex].push(cell);
 
       const columnIndex = index % 9;
-      columns[columnIndex].push(value);
+      columns[columnIndex].push(cell);
     });
 
     return {
@@ -27,5 +29,5 @@ export default function useBoard(raw: number[]) {
 }
 
 function createNineArrays() {
-  return Array.from({ length: 9 }, () => [] as number[]);
+  return Array.from({ length: 9 }, () => [] as CellState[]);
 }

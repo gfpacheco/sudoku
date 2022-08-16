@@ -7,15 +7,20 @@ import useNewGame from './useNewGame';
 export interface GameState {
   loading: boolean;
   error?: string;
-  raw: number[];
-  boxes: number[][];
-  rows: number[][];
-  columns: number[][];
+  raw: CellState[];
+  boxes: CellState[][];
+  rows: CellState[][];
+  columns: CellState[][];
+}
+
+export interface CellState {
+  value: number;
+  fixed: boolean;
 }
 
 export default function useGameState(difficulty: Difficulty): GameState {
   const { loading, error, initialState } = useNewGame(difficulty);
-  const [raw, setRaw] = useState<number[]>(new Array(81).fill(0));
+  const [raw, setRaw] = useState<CellState[]>(new Array(81).fill(0));
 
   useEffect(() => {
     if (initialState) {

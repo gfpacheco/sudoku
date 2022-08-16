@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 
 import { Difficulty } from '../components/App';
+import { CellState } from './useGameState';
 
 export interface NewGameState {
   loading: boolean;
   error?: string;
-  initialState?: number[];
+  initialState?: CellState[];
 }
 
 export default function useNewGame(difficulty: Difficulty) {
@@ -20,7 +21,13 @@ export default function useNewGame(difficulty: Difficulty) {
       .then((data: { board: number[][] }) => {
         setNewGame({
           loading: false,
-          initialState: data.board.flat(),
+          initialState: data.board.flat().map(
+            value =>
+              ({
+                value,
+                fixed: value !== 0,
+              } as CellState),
+          ),
         });
       })
       .catch(error => {
