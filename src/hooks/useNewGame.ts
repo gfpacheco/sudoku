@@ -22,12 +22,15 @@ export default function useNewGame(difficulty: Difficulty) {
         setNewGame({
           loading: false,
           initialState: data.board.flat().map(
-            value =>
-              ({
-                value,
-                fixed: value !== 0,
-                selected: false,
-              } as CellState),
+            (value): CellState => ({
+              value,
+              fixed: value !== 0,
+              selected: false,
+              annotations: {
+                corner: [],
+                center: [],
+              },
+            }),
           ),
         });
       })
