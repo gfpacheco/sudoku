@@ -18,6 +18,7 @@ export interface GameState {
   currentAnnotationType: AnnotationType;
   setCurrentAnnotationType: (annotationType: AnnotationType) => void;
   annotate: (value: number) => void;
+  clearAnnotation: () => void;
 }
 
 export interface CellState {

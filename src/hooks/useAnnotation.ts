@@ -65,9 +65,33 @@ export default function useAnnotation(
     });
   }
 
+  function clearAnnotation() {
+    setRaw(prev => {
+      const updateSpec: Spec<CellState[]> = {};
+
+      prev.forEach(({ selected }, index) => {
+        if (!selected) {
+          return;
+        }
+
+        updateSpec[index] = {
+          annotations: { $set: { corner: [], center: [] } },
+          value: { $set: 0 },
+        };
+      });
+
+      if (Object.keys(updateSpec).length === 0) {
+        return prev;
+      }
+
+      return update(prev, updateSpec);
+    });
+  }
+
   return {
     currentAnnotationType,
     setCurrentAnnotationType,
     annotate,
+    clearAnnotation,
   };
 }

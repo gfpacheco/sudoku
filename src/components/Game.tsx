@@ -22,6 +22,7 @@ export default function Game({ className, difficulty, ...rest }: GameProps) {
     currentAnnotationType,
     setCurrentAnnotationType,
     annotate,
+    clearAnnotation,
   } = useGameState(difficulty);
 
   useDocumentListener('keydown', event => {
@@ -30,6 +31,8 @@ export default function Game({ className, difficulty, ...rest }: GameProps) {
     if (numberKeys.includes(key)) {
       const number = parseInt(key, 10);
       annotate(number);
+    } else if (key === 'Backspace') {
+      clearAnnotation();
     }
   });
 
