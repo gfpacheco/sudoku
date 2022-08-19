@@ -3,12 +3,24 @@ import update, { Spec } from 'immutability-helper';
 import mapBoxAndCellToRawIndex from '../lib/mapBoxAndCellToRawIndex';
 import { CellState } from './useGameState';
 
+export type UseCellSelectionReturn = ReturnType<typeof useCellSelection>;
+
 export default function useCellSelection(
   setRaw: React.Dispatch<React.SetStateAction<CellState[]>>,
 ) {
-  function onCellSelect(box: number, cell: number, reset: boolean) {
+  function onCellSelect(
+    indexOrBoxAndCell: number | { boxIndex: number; cellIndex: number },
+    reset: boolean,
+  ) {
     setRaw(prev => {
-      const rawIndex = mapBoxAndCellToRawIndex(box, cell);
+      const rawIndex =
+        typeof indexOrBoxAndCell === 'number'
+          ? indexOrBoxAndCell
+          : mapBoxAndCellToRawIndex(
+              indexOrBoxAndCell.boxIndex,
+              indexOrBoxAndCell.cellIndex,
+            );
+
       const updateSpec: Spec<CellState[]> = {};
 
       if (reset) {

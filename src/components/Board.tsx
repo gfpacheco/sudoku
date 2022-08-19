@@ -8,7 +8,10 @@ import Cell from './Cell';
 
 export interface BoardProps extends React.ComponentPropsWithoutRef<'div'> {
   boxes: CellState[][];
-  onCellSelect: (box: number, cell: number, reset: boolean) => void;
+  onCellSelect: (
+    boxAndCell: { boxIndex: number; cellIndex: number },
+    reset: boolean,
+  ) => void;
   resetSelection: () => void;
 }
 
@@ -40,7 +43,9 @@ export default function Board({
             <Cell
               key={cellIndex}
               cellState={cellState}
-              onCellSelect={reset => onCellSelect(boxIndex, cellIndex, reset)}
+              onCellSelect={reset =>
+                onCellSelect({ boxIndex, cellIndex }, reset)
+              }
             />
           ))}
         </div>

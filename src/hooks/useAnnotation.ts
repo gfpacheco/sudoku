@@ -13,6 +13,8 @@ export const allAnnotationTypes = Object.keys(
   AnnotationType,
 ) as AnnotationType[];
 
+export type UseAnnotationReturn = ReturnType<typeof useAnnotation>;
+
 export default function useAnnotation(
   setRaw: React.Dispatch<React.SetStateAction<CellState[]>>,
 ) {

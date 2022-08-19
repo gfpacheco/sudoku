@@ -1,24 +1,20 @@
 import { useState } from 'react';
 
 import { Difficulty } from '../components/App';
-import useAnnotation, { AnnotationType } from './useAnnotation';
+import useAnnotation, { UseAnnotationReturn } from './useAnnotation';
 import useBoxes from './useBoxes';
-import useCellSelection from './useCellSelection';
+import useCellSelection, { UseCellSelectionReturn } from './useCellSelection';
 import useErrors from './useErrors';
+import useGameKeyboard from './useGameKeyboard';
 import useNewGame from './useNewGame';
 
-export interface GameState {
-  loading: boolean;
-  error?: string;
-  raw: CellState[];
-  boxes: CellState[][];
-  onCellSelect: (box: number, cell: number, reset: boolean) => void;
-  resetSelection: () => void;
-  currentAnnotationType: AnnotationType;
-  setCurrentAnnotationType: (annotationType: AnnotationType) => void;
-  annotate: (value: number) => void;
-  clearAnnotation: () => void;
-}
+export type GameState = UseCellSelectionReturn &
+  UseAnnotationReturn & {
+    loading: boolean;
+    error?: string;
+    raw: CellState[];
+    boxes: CellState[][];
+  };
 
 export interface CellState {
   value: number;
@@ -49,6 +45,8 @@ export default function useGameState(difficulty: Difficulty): GameState {
   const annotation = useAnnotation(setRaw);
   const cellStates = useErrors(raw);
   const boxes = useBoxes(cellStates);
+
+  useGameKeyboard(raw, cellSelection, annotation);
 
   return {
     loading,

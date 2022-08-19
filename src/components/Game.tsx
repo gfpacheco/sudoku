@@ -1,5 +1,4 @@
 import { allAnnotationTypes } from '../hooks/useAnnotation';
-import useDocumentListener from '../hooks/useDocumentListener';
 import useGameState from '../hooks/useGameState';
 import stopPropagation from '../lib/stopPropagation';
 import { Difficulty } from './App';
@@ -10,8 +9,6 @@ export interface GameProps extends React.ComponentPropsWithoutRef<'div'> {
   difficulty: Difficulty;
 }
 
-const numberKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-
 export default function Game({ className, difficulty, ...rest }: GameProps) {
   const {
     loading,
@@ -21,20 +18,7 @@ export default function Game({ className, difficulty, ...rest }: GameProps) {
     resetSelection,
     currentAnnotationType,
     setCurrentAnnotationType,
-    annotate,
-    clearAnnotation,
   } = useGameState(difficulty);
-
-  useDocumentListener('keydown', event => {
-    const key = (event as KeyboardEvent).key;
-
-    if (numberKeys.includes(key)) {
-      const number = parseInt(key, 10);
-      annotate(number);
-    } else if (key === 'Backspace') {
-      clearAnnotation();
-    }
-  });
 
   if (loading) {
     return <div {...rest}>Loading...</div>;
