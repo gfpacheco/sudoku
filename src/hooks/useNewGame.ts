@@ -6,10 +6,12 @@ import { CellState } from './useGameState';
 export interface NewGameState {
   loading: boolean;
   error?: string;
-  initialState?: CellState[];
 }
 
-export default function useNewGame(difficulty: Difficulty) {
+export default function useNewGame(
+  difficulty: Difficulty,
+  setRaw: React.Dispatch<React.SetStateAction<CellState[]>>,
+) {
   const [newGame, setNewGame] = useState<NewGameState>({
     loading: true,
   });
@@ -19,9 +21,9 @@ export default function useNewGame(difficulty: Difficulty) {
     fetch(`https://sugoku.herokuapp.com/board?difficulty=${difficulty}`)
       .then(res => res.json())
       .then((data: { board: number[][] }) => {
-        setNewGame({
-          loading: false,
-          initialState: data.board.flat().map(
+        setNewGame({ loading: false });
+        setRaw(
+          data.board.flat().map(
             (value): CellState => ({
               value,
               fixed: value !== 0,
@@ -32,7 +34,7 @@ export default function useNewGame(difficulty: Difficulty) {
               },
             }),
           ),
-        });
+        );
       })
       .catch(error => {
         setNewGame({
@@ -40,7 +42,7 @@ export default function useNewGame(difficulty: Difficulty) {
           error: error.message,
         });
       });
-  }, [difficulty]);
+  }, [difficulty, setRaw]);
 
   return newGame;
 }
