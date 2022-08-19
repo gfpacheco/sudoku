@@ -28,6 +28,7 @@ export default function useNewGame(
               value,
               fixed: value !== 0,
               selected: false,
+              error: false,
               annotations: {
                 corner: [],
                 center: [],

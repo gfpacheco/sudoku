@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { createNineArrays } from '../lib/createNineArrays';
 import mapRawToBoxAndCellIndex from '../lib/mapRawToBoxAndCellIndex';
 import { CellState } from './useGameState';
 
@@ -13,8 +14,4 @@ export default function useBoxes(raw: CellState[]) {
 
     return boxes;
   }, [raw]);
-}
-
-function createNineArrays() {
-  return Array.from({ length: 9 }, () => [] as CellState[]);
 }

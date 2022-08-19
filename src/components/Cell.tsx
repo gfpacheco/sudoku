@@ -70,7 +70,7 @@ export default function Cell({
       className={classNames(
         className,
         'relative flex items-center justify-center w-8 sm:w-12 h-8 sm:h-12 sm:text-2xl bg-white',
-        !cellState.fixed && 'text-blue-500',
+        cellState.error ? 'text-red-500' : !cellState.fixed && 'text-blue-500',
         cellState.selected && 'bg-yellow-200',
       )}
       onMouseDown={handleMouseEvent}

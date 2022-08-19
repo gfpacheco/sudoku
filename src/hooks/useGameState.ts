@@ -4,6 +4,7 @@ import { Difficulty } from '../components/App';
 import useAnnotation, { AnnotationType } from './useAnnotation';
 import useBoxes from './useBoxes';
 import useCellSelection from './useCellSelection';
+import useErrors from './useErrors';
 import useNewGame from './useNewGame';
 
 export interface GameState {
@@ -23,6 +24,7 @@ export interface CellState {
   value: number;
   fixed: boolean;
   selected: boolean;
+  error: boolean;
   annotations: {
     corner: number[];
     center: number[];
@@ -33,6 +35,7 @@ const blankState = Array.from({ length: 81 }, () => ({
   value: 0,
   fixed: false,
   selected: false,
+  error: false,
   annotations: {
     corner: [],
     center: [],
@@ -44,7 +47,8 @@ export default function useGameState(difficulty: Difficulty): GameState {
   const { loading, error } = useNewGame(difficulty, setRaw);
   const cellSelection = useCellSelection(setRaw);
   const annotation = useAnnotation(setRaw);
-  const boxes = useBoxes(raw);
+  const cellStates = useErrors(raw);
+  const boxes = useBoxes(cellStates);
 
   return {
     loading,
