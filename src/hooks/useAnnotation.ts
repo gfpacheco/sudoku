@@ -21,29 +21,31 @@ export default function useAnnotation(
   const [currentAnnotationType, setCurrentAnnotationType] =
     useState<AnnotationType>(AnnotationType.normal);
 
-  function annotate(value: number) {
+  function annotate(newValue: number) {
     setRaw(prev => {
       const updateSpec: Spec<CellState[]> = {};
 
-      prev.forEach(({ fixed, selected, annotations }, index) => {
+      prev.forEach(({ value, fixed, selected, annotations }, index) => {
         if (fixed || !selected) {
           return;
         }
 
         if (currentAnnotationType === AnnotationType.normal) {
           updateSpec[index] = {
-            value: { $set: value },
+            value: { $set: newValue },
             annotations: { $set: { corner: [], center: [] } },
           };
+        } else if (value) {
+          return;
         } else {
           const existingAnnotationIndex =
-            annotations[currentAnnotationType].indexOf(value);
+            annotations[currentAnnotationType].indexOf(newValue);
 
           if (existingAnnotationIndex === -1) {
             updateSpec[index] = {
               annotations: {
                 [currentAnnotationType]: {
-                  $push: [value],
+                  $push: [newValue],
                 },
               },
             };
