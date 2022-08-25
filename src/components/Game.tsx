@@ -1,32 +1,19 @@
 import { allAnnotationTypes } from '../hooks/useAnnotation';
 import useGameState from '../hooks/useGameState';
 import stopPropagation from '../lib/stopPropagation';
-import { Difficulty } from './App';
 import Board from './Board';
 import Button from './Button';
 
-export interface GameProps extends React.ComponentPropsWithoutRef<'div'> {
-  difficulty: Difficulty;
-}
+export interface GameProps extends React.ComponentPropsWithoutRef<'div'> {}
 
-export default function Game({ className, difficulty, ...rest }: GameProps) {
+export default function Game({ className, ...rest }: GameProps) {
   const {
-    loading,
-    error,
     boxes,
     onCellSelect,
     resetSelection,
     currentAnnotationType,
     setCurrentAnnotationType,
-  } = useGameState(difficulty);
-
-  if (loading) {
-    return <div {...rest}>Loading...</div>;
-  }
-
-  if (error) {
-    return <div {...rest}>Error: {error}</div>;
-  }
+  } = useGameState();
 
   return (
     <div className={className}>
