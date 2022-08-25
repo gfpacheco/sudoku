@@ -71,8 +71,8 @@ export default function useAnnotation(
     setRaw(prev => {
       const updateSpec: Spec<CellState[]> = {};
 
-      prev.forEach(({ selected }, index) => {
-        if (!selected) {
+      prev.forEach(({ fixed, selected }, index) => {
+        if (fixed || !selected) {
           return;
         }
 
