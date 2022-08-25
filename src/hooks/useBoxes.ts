@@ -2,9 +2,9 @@ import { useMemo } from 'react';
 
 import { createNineArrays } from '../lib/createNineArrays';
 import mapRawToBoxAndCellIndex from '../lib/mapRawToBoxAndCellIndex';
-import { CellState } from './useGameState';
+import { ComputedCellState } from './useGameState';
 
-export default function useBoxes(raw: CellState[]) {
+export default function useBoxes(raw: ComputedCellState[]) {
   return useMemo(() => {
     const boxes = createNineArrays();
 

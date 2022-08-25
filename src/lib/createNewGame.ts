@@ -7,7 +7,6 @@ export default function createNewGame(): CellState[] {
     value: (value ?? -1) + 1,
     fixed: value !== null,
     selected: false,
-    error: false,
     annotations: {
       corner: [],
       center: [],

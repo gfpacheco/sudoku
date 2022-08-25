@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 
-import { CellState } from '../hooks/useGameState';
+import { ComputedCellState } from '../hooks/useGameState';
 import shouldResetSelection from '../lib/shouldResetSelection';
 
 export interface CellProps
   extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onSelect'> {
-  cellState: CellState;
+  cellState: ComputedCellState;
   onCellSelect: (reset: boolean) => void;
 }
 
@@ -69,9 +69,16 @@ export default function Cell({
     <div
       className={classNames(
         className,
-        'relative flex items-center justify-center w-8 sm:w-12 h-8 sm:h-12 sm:text-2xl bg-white',
+        'relative flex items-center justify-center w-8 sm:w-12 h-8 sm:h-12',
+        cellState.highlighted ? 'text-2xl sm:text-4xl' : 'sm:text-2xl',
         cellState.error ? 'text-red-500' : !cellState.fixed && 'text-blue-500',
-        cellState.selected && 'bg-yellow-200',
+        cellState.selected
+          ? 'bg-yellow-200'
+          : cellState.highlighted
+          ? 'bg-blue-50'
+          : cellState.forbidden
+          ? 'bg-red-50'
+          : 'bg-white',
       )}
       onMouseDown={handleMouseEvent}
       onMouseEnter={handleMouseEnterEvent}

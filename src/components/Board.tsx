@@ -1,13 +1,13 @@
 import classNames from 'classnames';
 
 import useDocumentListener from '../hooks/useDocumentListener';
-import { CellState } from '../hooks/useGameState';
+import { ComputedCellState } from '../hooks/useGameState';
 import shouldResetSelection from '../lib/shouldResetSelection';
 import stopPropagation from '../lib/stopPropagation';
 import Cell from './Cell';
 
 export interface BoardProps extends React.ComponentPropsWithoutRef<'div'> {
-  boxes: CellState[][];
+  boxes: ComputedCellState[][];
   onCellSelect: (
     boxAndCell: { boxIndex: number; cellIndex: number },
     reset: boolean,
