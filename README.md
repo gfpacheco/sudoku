@@ -1,6 +1,12 @@
-# Getting Started with Create React App
+# Sudoku
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+I created ~~yet another~~ this sudoku app because I couldn't find one that had:
+
+- Corner and center annotations
+- Keyboard shortcuts
+- Helper features so I could focus on practicing more [advanced techniques](https://www.sudokuoftheday.com/techniques).
+
+> This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
