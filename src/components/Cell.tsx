@@ -1,12 +1,14 @@
 import classNames from 'classnames';
 
 import { ComputedCellState } from '../hooks/useGameState';
+import { Settings } from '../hooks/useSettings';
 import shouldResetSelection from '../lib/shouldResetSelection';
 
 export interface CellProps
   extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onSelect'> {
   cellState: ComputedCellState;
   onCellSelect: (reset: boolean) => void;
+  settings: Settings;
 }
 
 const cornerAnnotationClasses = {
@@ -49,6 +51,7 @@ export default function Cell({
   className,
   cellState,
   onCellSelect,
+  settings,
   ...rest
 }: CellProps) {
   function handleMouseEvent(
@@ -70,13 +73,17 @@ export default function Cell({
       className={classNames(
         className,
         'relative flex items-center justify-center w-8 sm:w-12 h-8 sm:h-12',
-        cellState.highlighted ? 'text-2xl sm:text-4xl' : 'sm:text-2xl',
-        cellState.error ? 'text-red-500' : !cellState.fixed && 'text-blue-500',
+        settings.highlight && cellState.highlighted
+          ? 'text-2xl sm:text-3xl'
+          : 'sm:text-2xl',
+        settings.error && cellState.error
+          ? 'text-red-500'
+          : !cellState.fixed && 'text-blue-500',
         cellState.selected
           ? 'bg-yellow-200'
-          : cellState.highlighted
+          : settings.highlight && cellState.highlighted
           ? 'bg-blue-50'
-          : cellState.forbidden
+          : settings.forbidden && cellState.forbidden
           ? 'bg-red-50'
           : 'bg-white',
       )}

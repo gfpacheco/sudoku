@@ -2,6 +2,7 @@ import classNames from 'classnames';
 
 import useDocumentListener from '../hooks/useDocumentListener';
 import { ComputedCellState } from '../hooks/useGameState';
+import { Settings } from '../hooks/useSettings';
 import shouldResetSelection from '../lib/shouldResetSelection';
 import stopPropagation from '../lib/stopPropagation';
 import Cell from './Cell';
@@ -13,6 +14,7 @@ export interface BoardProps extends React.ComponentPropsWithoutRef<'div'> {
     reset: boolean,
   ) => void;
   resetSelection: () => void;
+  settings: Settings;
 }
 
 export default function Board({
@@ -20,6 +22,7 @@ export default function Board({
   boxes,
   onCellSelect,
   resetSelection,
+  settings,
   ...rest
 }: BoardProps) {
   useDocumentListener('mousedown', event => {
@@ -46,6 +49,7 @@ export default function Board({
               onCellSelect={reset =>
                 onCellSelect({ boxIndex, cellIndex }, reset)
               }
+              settings={settings}
             />
           ))}
         </div>

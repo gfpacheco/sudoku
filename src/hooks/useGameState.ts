@@ -6,9 +6,11 @@ import useAnnotation, { UseAnnotationReturn } from './useAnnotation';
 import useBoxes from './useBoxes';
 import useCellSelection, { UseCellSelectionReturn } from './useCellSelection';
 import useGameKeyboard from './useGameKeyboard';
+import useSettings, { UseSettingsReturn } from './useSettings';
 
 export type GameState = UseCellSelectionReturn &
-  UseAnnotationReturn & {
+  UseAnnotationReturn &
+  UseSettingsReturn & {
     boxes: ComputedCellState[][];
   };
 
@@ -34,6 +36,7 @@ export default function useGameState(): GameState {
   const annotation = useAnnotation(setRaw);
   const computed = computeCellStates(raw);
   const boxes = useBoxes(computed);
+  const settings = useSettings();
 
   useGameKeyboard(raw, cellSelection, annotation);
 
@@ -41,5 +44,6 @@ export default function useGameState(): GameState {
     boxes,
     ...cellSelection,
     ...annotation,
+    ...settings,
   };
 }
