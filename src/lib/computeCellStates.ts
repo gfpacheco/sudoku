@@ -12,8 +12,8 @@ export default function useErrors(raw: CellState[]): ComputedCellState[] {
   const highlightedValue =
     (selectedCells.length === 1 && selectedCells[0].value) || null;
   const highlightedCellsIndexes = raw
-    .map((cell, index) => (cell.value === highlightedValue ? index : 0))
-    .filter(index => index !== 0);
+    .map((cell, index) => (cell.value === highlightedValue ? index : -1))
+    .filter(index => index !== -1);
   const forbiddenBoxes = highlightedCellsIndexes.map(index =>
     mapRawToBoxIndex(index),
   );
@@ -50,11 +50,13 @@ export default function useErrors(raw: CellState[]): ComputedCellState[] {
       ...cellState,
       error,
       highlighted: cellState.value === highlightedValue,
-      forbidden:
-        Boolean(highlightedValue && cellState.value) ||
-        forbiddenBoxes.includes(boxIndex) ||
-        forbiddenRows.includes(rowIndex) ||
-        forbiddenColumns.includes(columnIndex),
+      forbidden: Boolean(
+        highlightedValue &&
+          (cellState.value ||
+            forbiddenBoxes.includes(boxIndex) ||
+            forbiddenRows.includes(rowIndex) ||
+            forbiddenColumns.includes(columnIndex)),
+      ),
     };
   });
 }
