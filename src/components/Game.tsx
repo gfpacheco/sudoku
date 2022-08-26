@@ -18,11 +18,17 @@ export default function Game({ className, ...rest }: GameProps) {
     setCurrentAnnotationType,
     settings,
     setSetting,
+    reset,
   } = useGameState();
 
   return (
     <div className={classNames(className, 'flex flex-col')} {...rest}>
-      <Menu className="self-end" settings={settings} setSetting={setSetting} />
+      <Menu
+        className="self-end"
+        settings={settings}
+        setSetting={setSetting}
+        reset={reset}
+      />
       <Board
         boxes={boxes}
         onCellSelect={onCellSelect}

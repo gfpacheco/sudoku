@@ -2,17 +2,20 @@ import classNames from 'classnames';
 
 import { Settings } from '../hooks/useSettings';
 import MenuDot from './MenuDot';
+import MenuItem from './MenuItem';
 import MenuSetting from './MenuSetting';
 
 export interface MenuProps extends React.ComponentPropsWithoutRef<'div'> {
   settings: Settings;
   setSetting: (key: keyof Settings, value: boolean) => void;
+  reset: () => void;
 }
 
 export default function Menu({
   className,
   settings,
   setSetting,
+  reset,
   ...rest
 }: MenuProps) {
   return (
@@ -35,6 +38,7 @@ export default function Menu({
             setSetting={setSetting}
           />
         ))}
+        <MenuItem onClick={() => reset()}>Reset</MenuItem>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { MouseEvent } from 'react';
 
 import { Settings } from '../hooks/useSettings';
+import MenuItem from './MenuItem';
 
 export interface MenuSettingProps
   extends React.ComponentPropsWithoutRef<'button'> {
@@ -11,7 +12,6 @@ export interface MenuSettingProps
 }
 
 export default function MenuSetting({
-  className,
   settings,
   setting,
   setSetting,
@@ -23,15 +23,7 @@ export default function MenuSetting({
     onClick?.(event);
   }
   return (
-    <button
-      className={classNames(
-        className,
-        'px-4 py-2 hover:bg-slate-50 cursor-pointer flex justify-between items-center capitalize',
-      )}
-      type="button"
-      onClick={handleClick}
-      {...rest}
-    >
+    <MenuItem onClick={handleClick} {...rest}>
       {setting}
       <span
         className={classNames(
@@ -46,6 +38,6 @@ export default function MenuSetting({
           )}
         />
       </span>
-    </button>
+    </MenuItem>
   );
 }
