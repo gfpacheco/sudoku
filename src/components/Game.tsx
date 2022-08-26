@@ -19,6 +19,7 @@ export default function Game({ className, ...rest }: GameProps) {
     settings,
     setSetting,
     reset,
+    newGame,
   } = useGameState();
 
   return (
@@ -28,6 +29,7 @@ export default function Game({ className, ...rest }: GameProps) {
         settings={settings}
         setSetting={setSetting}
         reset={reset}
+        newGame={newGame}
       />
       <Board
         boxes={boxes}

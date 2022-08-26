@@ -9,6 +9,7 @@ export interface MenuProps extends React.ComponentPropsWithoutRef<'div'> {
   settings: Settings;
   setSetting: (key: keyof Settings, value: boolean) => void;
   reset: () => void;
+  newGame: () => void;
 }
 
 export default function Menu({
@@ -16,6 +17,7 @@ export default function Menu({
   settings,
   setSetting,
   reset,
+  newGame,
   ...rest
 }: MenuProps) {
   return (
@@ -38,7 +40,8 @@ export default function Menu({
             setSetting={setSetting}
           />
         ))}
-        <MenuItem onClick={() => reset()}>Reset</MenuItem>
+        <MenuItem onClick={reset}>Reset</MenuItem>
+        <MenuItem onClick={newGame}>New Game</MenuItem>
       </div>
     </div>
   );

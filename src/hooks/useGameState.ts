@@ -4,15 +4,17 @@ import useAnnotation, { UseAnnotationReturn } from './useAnnotation';
 import useBoxes from './useBoxes';
 import useCellSelection, { UseCellSelectionReturn } from './useCellSelection';
 import useGameKeyboard from './useGameKeyboard';
+import useNewGame from './useNewGame';
 import usePersistentState from './usePersistentState';
-import useReset, { UseResetReturn } from './useReset';
+import useReset from './useReset';
 import useSettings, { UseSettingsReturn } from './useSettings';
 
 export type GameState = UseCellSelectionReturn &
   UseAnnotationReturn &
   UseSettingsReturn & {
     boxes: ComputedCellState[][];
-    reset: UseResetReturn;
+    reset: () => void;
+    newGame: () => void;
   };
 
 export interface CellState {
@@ -37,6 +39,7 @@ export default function useGameState(): GameState {
     'gameState',
   );
   const reset = useReset(setRaw);
+  const newGame = useNewGame(setRaw);
   const cellSelection = useCellSelection(setRaw);
   const annotation = useAnnotation(setRaw);
   const computed = computeCellStates(raw);
@@ -48,6 +51,7 @@ export default function useGameState(): GameState {
   return {
     boxes,
     reset,
+    newGame,
     ...cellSelection,
     ...annotation,
     ...settings,

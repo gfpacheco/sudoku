@@ -2,8 +2,6 @@ import update, { Spec } from 'immutability-helper';
 
 import { CellState } from './useGameState';
 
-export type UseResetReturn = ReturnType<typeof useReset>;
-
 export default function useReset(
   setRaw: React.Dispatch<React.SetStateAction<CellState[]>>,
 ) {
