@@ -1,8 +1,8 @@
-import mapRawToColumnIndex from '../hooks/mapRawToColumnIndex';
-import mapRawToRowIndex from '../hooks/mapRawToRowIndex';
 import { CellState, ComputedCellState } from '../hooks/useGameState';
 import createNineObjects from './createNineObjects';
 import mapRawToBoxIndex from './mapRawToBoxIndex';
+import mapRawToColumnIndex from './mapRawToColumnIndex';
+import mapRawToRowIndex from './mapRawToRowIndex';
 
 export default function useErrors(raw: CellState[]): ComputedCellState[] {
   const boxes = createNineObjects();

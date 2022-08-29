@@ -1,5 +1,5 @@
 import update, { Spec } from 'immutability-helper';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { CellState } from './useGameState';
 
@@ -21,55 +21,58 @@ export default function useAnnotation(
   const [currentAnnotationType, setCurrentAnnotationType] =
     useState<AnnotationType>(AnnotationType.normal);
 
-  function annotate(newValue: number) {
-    setRaw(prev => {
-      const updateSpec: Spec<CellState[]> = {};
+  const annotate = useCallback(
+    (newValue: number) => {
+      setRaw(prev => {
+        const updateSpec: Spec<CellState[]> = {};
 
-      prev.forEach(({ value, fixed, selected, annotations }, index) => {
-        if (fixed || !selected) {
-          return;
-        }
-
-        if (currentAnnotationType === AnnotationType.normal) {
-          updateSpec[index] = {
-            value: { $set: newValue },
-            annotations: { $set: { corner: [], center: [] } },
-          };
-        } else if (value) {
-          return;
-        } else {
-          const existingAnnotationIndex =
-            annotations[currentAnnotationType].indexOf(newValue);
-
-          if (existingAnnotationIndex === -1) {
-            updateSpec[index] = {
-              annotations: {
-                [currentAnnotationType]: {
-                  $push: [newValue],
-                },
-              },
-            };
-          } else {
-            updateSpec[index] = {
-              annotations: {
-                [currentAnnotationType]: {
-                  $splice: [[existingAnnotationIndex, 1]],
-                },
-              },
-            };
+        prev.forEach(({ value, fixed, selected, annotations }, index) => {
+          if (fixed || !selected) {
+            return;
           }
+
+          if (currentAnnotationType === AnnotationType.normal) {
+            updateSpec[index] = {
+              value: { $set: newValue },
+              annotations: { $set: { corner: [], center: [] } },
+            };
+          } else if (value) {
+            return;
+          } else {
+            const existingAnnotationIndex =
+              annotations[currentAnnotationType].indexOf(newValue);
+
+            if (existingAnnotationIndex === -1) {
+              updateSpec[index] = {
+                annotations: {
+                  [currentAnnotationType]: {
+                    $push: [newValue],
+                  },
+                },
+              };
+            } else {
+              updateSpec[index] = {
+                annotations: {
+                  [currentAnnotationType]: {
+                    $splice: [[existingAnnotationIndex, 1]],
+                  },
+                },
+              };
+            }
+          }
+        });
+
+        if (Object.keys(updateSpec).length === 0) {
+          return prev;
         }
+
+        return update(prev, updateSpec);
       });
+    },
+    [currentAnnotationType, setRaw],
+  );
 
-      if (Object.keys(updateSpec).length === 0) {
-        return prev;
-      }
-
-      return update(prev, updateSpec);
-    });
-  }
-
-  function clearAnnotation() {
+  const clearAnnotation = useCallback(() => {
     setRaw(prev => {
       const updateSpec: Spec<CellState[]> = {};
 
@@ -90,7 +93,7 @@ export default function useAnnotation(
 
       return update(prev, updateSpec);
     });
-  }
+  }, [setRaw]);
 
   return {
     currentAnnotationType,

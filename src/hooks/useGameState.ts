@@ -47,7 +47,7 @@ export default function useGameState(): GameState {
   const computed = computeCellStates(raw);
   const boxes = useBoxes(computed);
   const settings = useSettings();
-  const complete = useComplete(computed);
+  const complete = useComplete(computed, cellSelection.resetSelection);
 
   useGameKeyboard(raw, cellSelection, annotation);
 
