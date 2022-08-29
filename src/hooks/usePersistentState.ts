@@ -14,7 +14,10 @@ export default function usePersistentState<T>(
         : defaultValueOrFunction;
 
     if (json) {
-      return mergeFunction(defaultValue, JSON.parse(json) as T);
+      const loadedValue = JSON.parse(json) as T;
+      return typeof loadedValue === 'object'
+        ? mergeFunction(defaultValue, loadedValue)
+        : loadedValue;
     }
 
     return defaultValue;

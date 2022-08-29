@@ -1,5 +1,3 @@
-
-
 import { AnnotationType, UseAnnotationReturn } from './useAnnotation';
 import { UseCellSelectionReturn } from './useCellSelection';
 import useDocumentListener from './useDocumentListener';

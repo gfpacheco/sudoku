@@ -1,0 +1,33 @@
+import update from 'immutability-helper';
+import { useCallback, useEffect } from 'react';
+
+import formatTime from '../lib/formatTime';
+import usePersistentState from './usePersistentState';
+
+export interface Timer {
+  seconds: number;
+}
+
+export type UseTimerReturn = ReturnType<typeof useTimer>;
+
+export default function useTimer(complete: boolean) {
+  const [timer, setTimer] = usePersistentState<Timer>({ seconds: 0 }, 'timer');
+
+  useEffect(() => {
+    if (!complete) {
+      const interval = setInterval(() => {
+        setTimer(prev => update(prev, { seconds: { $set: prev.seconds + 1 } }));
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [complete, setTimer]);
+
+  const resetTimer = useCallback(() => {
+    setTimer(prev => update(prev, { seconds: { $set: 0 } }));
+  }, [setTimer]);
+
+  return {
+    time: formatTime(timer.seconds),
+    resetTimer,
+  };
+}

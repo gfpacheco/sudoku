@@ -19,21 +19,24 @@ export default function Game({ className, ...rest }: GameProps) {
     setCurrentAnnotationType,
     settings,
     setSetting,
-    reset,
+    restartGame,
     newGame,
     complete,
+    time,
   } = useGameState();
   useCelebration(complete);
 
   return (
     <div className={classNames(className, 'flex flex-col')} {...rest}>
-      <Menu
-        className="self-end"
-        settings={settings}
-        setSetting={setSetting}
-        reset={reset}
-        newGame={newGame}
-      />
+      <div className="flex justify-between">
+        <p className="text-lg">{time}</p>
+        <Menu
+          settings={settings}
+          setSetting={setSetting}
+          restartGame={restartGame}
+          newGame={newGame}
+        />
+      </div>
       <Board
         boxes={boxes}
         onCellSelect={onCellSelect}

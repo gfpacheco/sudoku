@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 
 import { CellState } from './useGameState';
 
-export default function useReset(
+export default function useRestartGame(
   setRaw: React.Dispatch<React.SetStateAction<CellState[]>>,
 ) {
   return useCallback(
