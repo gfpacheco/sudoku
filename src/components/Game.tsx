@@ -23,13 +23,23 @@ export default function Game({ className, ...rest }: GameProps) {
     newGame,
     complete,
     time,
+    bestTime,
   } = useGameState();
   useCelebration(complete);
 
   return (
     <div className={classNames(className, 'flex flex-col')} {...rest}>
       <div className="flex justify-between">
-        <p className="text-lg">{time}</p>
+        <p
+          className="text-lg"
+          title={
+            bestTime
+              ? `Best time: ${bestTime}`
+              : 'Your best time will be registered'
+          }
+        >
+          {time}
+        </p>
         <Menu
           settings={settings}
           setSetting={setSetting}

@@ -6,15 +6,25 @@ import usePersistentState from './usePersistentState';
 
 export interface Timer {
   seconds: number;
+  bestSeconds: number;
 }
 
 export type UseTimerReturn = ReturnType<typeof useTimer>;
 
 export default function useTimer(complete: boolean) {
-  const [timer, setTimer] = usePersistentState<Timer>({ seconds: 0 }, 'timer');
+  const [timer, setTimer] = usePersistentState<Timer>(
+    { seconds: 0, bestSeconds: 0 },
+    'timer',
+  );
 
   useEffect(() => {
-    if (!complete) {
+    if (complete) {
+      setTimer(prev =>
+        update(prev, {
+          bestSeconds: { $set: Math.min(prev.bestSeconds, prev.seconds) },
+        }),
+      );
+    } else {
       const interval = setInterval(() => {
         setTimer(prev => update(prev, { seconds: { $set: prev.seconds + 1 } }));
       }, 1000);
@@ -28,6 +38,7 @@ export default function useTimer(complete: boolean) {
 
   return {
     time: formatTime(timer.seconds),
+    bestTime: formatTime(timer.bestSeconds),
     resetTimer,
   };
 }
