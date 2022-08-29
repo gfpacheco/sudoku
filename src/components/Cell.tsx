@@ -106,7 +106,7 @@ export default function Cell({
           </div>
         ))}
       </div>
-      <div className="absolute inset-0 flex items-center justify-center text-sm text-slate-400 font-light">
+      <div className="absolute inset-0 flex items-center justify-center text-sm text-center text-slate-400 font-light">
         {cellState.annotations.center.sort().join(' ')}
       </div>
     </div>
