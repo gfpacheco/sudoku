@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 
 import { allAnnotationTypes } from '../hooks/useAnnotation';
+import useCelebration from '../hooks/useCelebration';
 import useGameState from '../hooks/useGameState';
 import stopPropagation from '../lib/stopPropagation';
 import Board from './Board';
@@ -20,7 +21,9 @@ export default function Game({ className, ...rest }: GameProps) {
     setSetting,
     reset,
     newGame,
+    complete,
   } = useGameState();
+  useCelebration(complete);
 
   return (
     <div className={classNames(className, 'flex flex-col')} {...rest}>
