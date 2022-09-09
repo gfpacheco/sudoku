@@ -24,7 +24,7 @@ export default function Menu({
     <div
       className={classNames(
         className,
-        'relative group p-2 grid grid-flow-col gap-1',
+        'relative group p-3 grid grid-flow-col gap-1',
       )}
       {...rest}
     >
