@@ -4,6 +4,7 @@ import useAnnotation, { UseAnnotationReturn } from './useAnnotation';
 import useBoxes from './useBoxes';
 import useCellSelection, { UseCellSelectionReturn } from './useCellSelection';
 import useComplete from './useComplete';
+import useGameHistory, { UseGameHistoryReturn } from './useGameHistory';
 import useGameKeyboard from './useGameKeyboard';
 import useNewGame from './useNewGame';
 import usePersistentState from './usePersistentState';
@@ -14,7 +15,8 @@ import useTimer, { UseTimerReturn } from './useTimer';
 export type GameState = UseCellSelectionReturn &
   UseAnnotationReturn &
   UseSettingsReturn &
-  UseTimerReturn & {
+  UseTimerReturn &
+  UseGameHistoryReturn & {
     complete: boolean;
     boxes: ComputedCellState[][];
     restartGame: () => void;
@@ -50,9 +52,10 @@ export default function useGameState(): GameState {
   const settings = useSettings();
   const complete = useComplete(computed, cellSelection.resetSelection);
   const timer = useTimer(complete);
+  const history = useGameHistory(raw, setRaw);
   const newGame = useNewGame(setRaw, timer.resetTimer);
 
-  useGameKeyboard(raw, cellSelection, annotation);
+  useGameKeyboard(raw, cellSelection, annotation, history);
 
   return {
     boxes,
@@ -63,5 +66,6 @@ export default function useGameState(): GameState {
     ...annotation,
     ...settings,
     ...timer,
+    ...history,
   };
 }
