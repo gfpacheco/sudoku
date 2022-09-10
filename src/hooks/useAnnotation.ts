@@ -1,6 +1,7 @@
 import update, { Spec } from 'immutability-helper';
 import { useCallback, useState } from 'react';
 
+import forRelatedCells from '../lib/forRelatedCells';
 import { CellState } from './useGameState';
 
 export enum AnnotationType {
@@ -36,6 +37,21 @@ export default function useAnnotation(
               value: { $set: newValue },
               annotations: { $set: { corner: [], center: [] } },
             };
+
+            forRelatedCells(index, cellIndex => {
+              const { corner, center } = prev[cellIndex].annotations;
+
+              if (corner.includes(newValue) || center.includes(newValue)) {
+                updateSpec[cellIndex] = {
+                  annotations: {
+                    $set: {
+                      corner: corner.filter(v => v !== newValue),
+                      center: center.filter(v => v !== newValue),
+                    },
+                  },
+                };
+              }
+            });
           } else if (value) {
             return;
           } else {
