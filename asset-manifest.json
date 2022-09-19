@@ -2,6 +2,7 @@
   "files": {
     "main.css": "/sudoku/static/css/main.41251351.css",
     "main.js": "/sudoku/static/js/main.eed9722c.js",
+    "service-worker.js": "/sudoku/service-worker.js",
     "index.html": "/sudoku/index.html",
     "main.41251351.css.map": "/sudoku/static/css/main.41251351.css.map",
     "main.eed9722c.js.map": "/sudoku/static/js/main.eed9722c.js.map"
