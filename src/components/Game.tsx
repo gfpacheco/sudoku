@@ -6,6 +6,7 @@ import useGameState from '../hooks/useGameState';
 import stopPropagation from '../lib/stopPropagation';
 import Board from './Board';
 import Button from './Button';
+import Keyboard from './Keyboard';
 import Menu from './Menu';
 
 export interface GameProps extends React.ComponentPropsWithoutRef<'div'> {}
@@ -17,6 +18,7 @@ export default function Game({ className, ...rest }: GameProps) {
     resetSelection,
     currentAnnotationType,
     setCurrentAnnotationType,
+    annotate,
     settings,
     setSetting,
     restartGame,
@@ -66,6 +68,7 @@ export default function Game({ className, ...rest }: GameProps) {
           </Button>
         ))}
       </div>
+      <Keyboard annotate={annotate} />
     </div>
   );
 }
