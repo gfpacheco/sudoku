@@ -54,15 +54,12 @@ export default function Cell({
   settings,
   ...rest
 }: CellProps) {
-  function handleMouseEvent(
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ) {
+  function handlePointerDownEvent(event: React.PointerEvent<HTMLDivElement>) {
     onCellSelect(shouldResetSelection(event));
+    (event.target as Element).releasePointerCapture(event.pointerId);
   }
 
-  function handleMouseEnterEvent(
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ) {
+  function handlePointerEnterEvent(event: React.PointerEvent<HTMLDivElement>) {
     if (event.buttons === 1) {
       onCellSelect(false);
     }
@@ -72,7 +69,7 @@ export default function Cell({
     <div
       className={classNames(
         className,
-        'relative flex items-center justify-center w-8 sm:w-12 h-8 sm:h-12',
+        'relative flex items-center justify-center w-8 sm:w-12 h-8 sm:h-12 touch-none',
         settings.highlight && cellState.highlighted
           ? 'text-2xl sm:text-3xl'
           : 'sm:text-2xl',
@@ -87,8 +84,8 @@ export default function Cell({
           ? 'bg-red-50'
           : 'bg-white',
       )}
-      onMouseDown={handleMouseEvent}
-      onMouseEnter={handleMouseEnterEvent}
+      onPointerDown={handlePointerDownEvent}
+      onPointerEnter={handlePointerEnterEvent}
       {...rest}
     >
       {cellState.value || ''}
