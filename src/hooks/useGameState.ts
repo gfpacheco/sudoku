@@ -4,6 +4,7 @@ import useAnnotation, { UseAnnotationReturn } from './useAnnotation';
 import useBoxes from './useBoxes';
 import useCellSelection, { UseCellSelectionReturn } from './useCellSelection';
 import useComplete from './useComplete';
+import useGameGestures from './useGameGestures';
 import useGameHistory, { UseGameHistoryReturn } from './useGameHistory';
 import useGameKeyboard from './useGameKeyboard';
 import useNewGame from './useNewGame';
@@ -56,6 +57,7 @@ export default function useGameState(): GameState {
   const newGame = useNewGame(setRaw, timer.resetTimer);
 
   useGameKeyboard(raw, cellSelection, annotation, history);
+  useGameGestures(history);
 
   return {
     boxes,

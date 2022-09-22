@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { ComputedCellState } from '../hooks/useGameState';
 import { Settings } from '../hooks/useSettings';
 import shouldResetSelection from '../lib/shouldResetSelection';
+import stopPropagation from '../lib/stopPropagation';
 
 export interface CellProps
   extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onSelect'> {
@@ -86,6 +87,9 @@ export default function Cell({
       )}
       onPointerDown={handlePointerDownEvent}
       onPointerEnter={handlePointerEnterEvent}
+      onTouchStart={stopPropagation}
+      onTouchMove={stopPropagation}
+      onTouchEnd={stopPropagation}
       {...rest}
     >
       {cellState.value || ''}
