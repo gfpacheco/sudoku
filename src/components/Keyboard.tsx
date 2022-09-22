@@ -26,7 +26,7 @@ export default function Keyboard({
       {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => (
         <Button
           key={value}
-          className="aspect-square px-0"
+          className="px-0"
           onClick={() => annotate(value)}
           onMouseDown={stopPropagation}
         >
