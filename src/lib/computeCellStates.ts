@@ -4,7 +4,9 @@ import mapRawToBoxIndex from './mapRawToBoxIndex';
 import mapRawToColumnIndex from './mapRawToColumnIndex';
 import mapRawToRowIndex from './mapRawToRowIndex';
 
-export default function useErrors(raw: CellState[]): ComputedCellState[] {
+export default function computeCellStates(
+  raw: CellState[],
+): ComputedCellState[] {
   const boxes = createNineObjects();
   const rows = createNineObjects();
   const columns = createNineObjects();
