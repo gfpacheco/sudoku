@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 import computeCellStates from '../lib/computeCellStates';
 import createNewGame from '../lib/createNewGame';
 import useAnnotation, { UseAnnotationReturn } from './useAnnotation';
@@ -45,16 +47,17 @@ export default function useGameState(): GameState {
     () => createNewGame(),
     'gameState',
   );
-  const restartGame = useRestartGame(setRaw);
-  const cellSelection = useCellSelection(setRaw);
-  const annotation = useAnnotation(setRaw);
-  const computed = computeCellStates(raw);
+  const recentValueRef = useRef<number | null>(null);
+  const restartGame = useRestartGame(setRaw, recentValueRef);
+  const cellSelection = useCellSelection(setRaw, recentValueRef);
+  const annotation = useAnnotation(setRaw, recentValueRef);
+  const computed = computeCellStates(raw, recentValueRef);
   const boxes = useBoxes(computed);
   const settings = useSettings();
   const complete = useComplete(computed, cellSelection.resetSelection);
   const timer = useTimer(complete);
   const history = useGameHistory(raw, setRaw);
-  const newGame = useNewGame(setRaw, timer.resetTimer);
+  const newGame = useNewGame(setRaw, timer.resetTimer, recentValueRef);
 
   useGameKeyboard(raw, cellSelection, annotation, history);
   useGameGestures(history);

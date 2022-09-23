@@ -18,12 +18,14 @@ export type UseAnnotationReturn = ReturnType<typeof useAnnotation>;
 
 export default function useAnnotation(
   setRaw: React.Dispatch<React.SetStateAction<CellState[]>>,
+  recentValueRef: React.MutableRefObject<number | null>,
 ) {
   const [currentAnnotationType, setCurrentAnnotationType] =
     useState<AnnotationType>(AnnotationType.normal);
 
   const annotate = useCallback(
     (newValue: number) => {
+      recentValueRef.current = newValue;
       setRaw(prev => {
         const updateSpec: Spec<CellState[]> = {};
 
@@ -85,7 +87,7 @@ export default function useAnnotation(
         return update(prev, updateSpec);
       });
     },
-    [currentAnnotationType, setRaw],
+    [currentAnnotationType, recentValueRef, setRaw],
   );
 
   const clearAnnotation = useCallback(() => {

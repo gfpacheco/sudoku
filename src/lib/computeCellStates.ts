@@ -6,13 +6,15 @@ import mapRawToRowIndex from './mapRawToRowIndex';
 
 export default function computeCellStates(
   raw: CellState[],
+  recentValueRef: React.MutableRefObject<number | null>,
 ): ComputedCellState[] {
   const boxes = createNineObjects();
   const rows = createNineObjects();
   const columns = createNineObjects();
   const selectedCells = raw.filter(cell => cell.selected);
   const highlightedValue =
-    (selectedCells.length === 1 && selectedCells[0].value) || null;
+    (selectedCells.length === 1 && selectedCells[0].value) ||
+    recentValueRef.current;
   const highlightedCellsIndexes = raw
     .map((cell, index) => (cell.value === highlightedValue ? index : -1))
     .filter(index => index !== -1);

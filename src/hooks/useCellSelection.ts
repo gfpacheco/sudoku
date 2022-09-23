@@ -8,12 +8,14 @@ export type UseCellSelectionReturn = ReturnType<typeof useCellSelection>;
 
 export default function useCellSelection(
   setRaw: React.Dispatch<React.SetStateAction<CellState[]>>,
+  recentValueRef: React.MutableRefObject<number | null>,
 ) {
   const onCellSelect = useCallback(
     (
       indexOrBoxAndCell: number | { boxIndex: number; cellIndex: number },
       reset: boolean,
     ) => {
+      recentValueRef.current = null;
       setRaw(prev => {
         const rawIndex =
           typeof indexOrBoxAndCell === 'number'
@@ -38,11 +40,12 @@ export default function useCellSelection(
         return update(prev, updateSpec);
       });
     },
-    [setRaw],
+    [recentValueRef, setRaw],
   );
 
   const resetSelection = useCallback(() => {
     setRaw(prev => {
+      recentValueRef.current = null;
       const updateSpec: Spec<CellState[]> = {};
 
       prev.forEach(({ selected }, index) => {
@@ -57,7 +60,7 @@ export default function useCellSelection(
 
       return update(prev, updateSpec);
     });
-  }, [setRaw]);
+  }, [recentValueRef, setRaw]);
 
   return { onCellSelect, resetSelection };
 }
