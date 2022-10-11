@@ -21,6 +21,7 @@ export default function Game({ className, ...rest }: GameProps) {
     annotate,
     settings,
     setSetting,
+    clearAnnotations,
     restartGame,
     newGame,
     complete,
@@ -45,6 +46,7 @@ export default function Game({ className, ...rest }: GameProps) {
         <Menu
           settings={settings}
           setSetting={setSetting}
+          clearAnnotations={clearAnnotations}
           restartGame={restartGame}
           newGame={newGame}
         />
