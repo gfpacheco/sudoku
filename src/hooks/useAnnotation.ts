@@ -90,7 +90,7 @@ export default function useAnnotation(
     [currentAnnotationType, recentValueRef, setRaw],
   );
 
-  const clearAnnotation = useCallback(() => {
+  const clearCell = useCallback(() => {
     setRaw(prev => {
       const updateSpec: Spec<CellState[]> = {};
 
@@ -117,6 +117,6 @@ export default function useAnnotation(
     currentAnnotationType,
     setCurrentAnnotationType,
     annotate,
-    clearAnnotation,
+    clearCell,
   };
 }

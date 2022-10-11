@@ -9,7 +9,7 @@ const numberKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 export default function useGameKeyboard(
   raw: CellState[],
   { onCellSelect, resetSelection }: UseCellSelectionReturn,
-  { setCurrentAnnotationType, annotate, clearAnnotation }: UseAnnotationReturn,
+  { setCurrentAnnotationType, annotate, clearCell }: UseAnnotationReturn,
   { undo, redo }: UseGameHistoryReturn,
 ) {
   useDocumentListener('keydown', e => {
@@ -18,9 +18,9 @@ export default function useGameKeyboard(
 
     switch (key) {
       case 'Backspace':
-        return clearAnnotation();
+        return clearCell();
       case 'Delete':
-        return clearAnnotation();
+        return clearCell();
       case 'Escape':
         return resetSelection();
       case 'q':
