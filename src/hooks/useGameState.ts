@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import computeCellStates from '../lib/computeCellStates';
 import createNewGame from '../lib/createNewGame';
 import useAnnotation, { UseAnnotationReturn } from './useAnnotation';
+import useAutoAnnotate from './useAutoAnnotate';
 import useBoxes from './useBoxes';
 import useCellSelection, { UseCellSelectionReturn } from './useCellSelection';
 import useComplete from './useComplete';
@@ -24,6 +25,7 @@ export type GameState = UseCellSelectionReturn &
     boxes: ComputedCellState[][];
     restartGame: () => void;
     newGame: () => void;
+    autoAnnotate: () => void;
   };
 
 export interface CellState {
@@ -58,6 +60,7 @@ export default function useGameState(): GameState {
   const timer = useTimer(complete);
   const history = useGameHistory(raw, setRaw);
   const newGame = useNewGame(setRaw, timer.resetTimer, recentValueRef);
+  const autoAnnotate = useAutoAnnotate(raw, setRaw);
 
   useGameKeyboard(raw, cellSelection, annotation, history);
   useGameGestures(history);
@@ -67,6 +70,7 @@ export default function useGameState(): GameState {
     restartGame,
     newGame,
     complete,
+    autoAnnotate,
     ...cellSelection,
     ...annotation,
     ...settings,

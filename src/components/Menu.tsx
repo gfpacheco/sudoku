@@ -11,6 +11,7 @@ export interface MenuProps extends React.ComponentPropsWithoutRef<'div'> {
   restartGame: () => void;
   newGame: () => void;
   clearAnnotations: () => void;
+  autoAnnotate: () => void;
 }
 
 export default function Menu({
@@ -20,6 +21,7 @@ export default function Menu({
   restartGame,
   newGame,
   clearAnnotations,
+  autoAnnotate,
   ...rest
 }: MenuProps) {
   return (
@@ -43,6 +45,7 @@ export default function Menu({
           />
         ))}
         <MenuItem onClick={clearAnnotations}>Clear annotations</MenuItem>
+        <MenuItem onClick={autoAnnotate}>Auto annotate</MenuItem>
         <MenuItem onClick={restartGame}>Restart</MenuItem>
         <MenuItem onClick={newGame}>New Game</MenuItem>
       </div>
