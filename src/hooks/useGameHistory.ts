@@ -1,3 +1,4 @@
+import update, { Spec } from 'immutability-helper';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { CellState } from './useGameState';
@@ -5,49 +6,66 @@ import { CellState } from './useGameState';
 export type UseGameHistoryReturn = ReturnType<typeof useGameHistory>;
 
 export default function useGameHistory(
-  state: CellState[],
-  setState: (state: CellState[]) => void,
-): {
-  undo: () => void;
-  redo: () => void;
-} {
-  const [history, setHistory] = useState<CellState[][]>([state]);
+  raw: CellState[],
+  setRaw: React.Dispatch<React.SetStateAction<CellState[]>>,
+) {
+  const [history, setHistory] = useState<CellState[][]>([raw]);
   const [index, setIndex] = useState(0);
-  const previousStateRef = useRef<CellState[]>(state);
+  const previousStateRef = useRef<CellState[]>(raw);
+
+  const setRawKeepingSelection = useCallback(
+    (newIndex: number) => {
+      if (newIndex < 0 || newIndex >= history.length) {
+        return;
+      }
+
+      setIndex(newIndex);
+      setRaw(prev => {
+        const updateSpec: Spec<CellState[]> = {};
+
+        prev.forEach((_, index) => {
+          updateSpec[index] = {
+            selected: {
+              $set: raw[index].selected,
+            },
+          };
+        });
+
+        const newRaw = update(history[newIndex], updateSpec);
+
+        setHistory(update(history, { [newIndex]: { $set: newRaw } }));
+
+        return newRaw;
+      });
+    },
+    [history, raw, setRaw],
+  );
 
   const undo = useCallback(() => {
-    if (index > 0) {
-      setIndex(index - 1);
-      setState(history[index - 1]);
-    }
-  }, [index, history, setState]);
+    setRawKeepingSelection(index - 1);
+  }, [index, setRawKeepingSelection]);
 
   const redo = useCallback(() => {
-    if (index < history.length - 1) {
-      setIndex(index + 1);
-      setState(history[index + 1]);
-    }
-  }, [index, history, setState]);
+    setRawKeepingSelection(index + 1);
+  }, [index, setRawKeepingSelection]);
 
   useEffect(() => {
-    const someCellChanged = state.some(
+    const someCellChanged = raw.some(
       (cell, i) =>
         cell.value !== previousStateRef.current[i].value ||
         cell.annotations !== previousStateRef.current[i].annotations,
     );
-    previousStateRef.current = state;
+    previousStateRef.current = raw;
 
     if (!someCellChanged) {
       return;
     }
 
-    if (history.includes(state)) {
-      setIndex(history.indexOf(state));
-    } else {
-      setHistory([...history.slice(0, index + 1), state]);
+    if (!history.includes(raw)) {
+      setHistory([...history.slice(0, index + 1), raw]);
       setIndex(index + 1);
     }
-  }, [history, index, state]);
+  }, [history, index, raw]);
 
   return { undo, redo };
 }
