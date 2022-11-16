@@ -27,7 +27,11 @@ export default function useTimer(complete: boolean) {
       );
     } else {
       const interval = setInterval(() => {
-        setTimer(prev => update(prev, { seconds: { $set: prev.seconds + 1 } }));
+        setTimer(prev =>
+          document.hasFocus()
+            ? update(prev, { seconds: { $set: prev.seconds + 1 } })
+            : prev,
+        );
       }, 1000);
       return () => clearInterval(interval);
     }
