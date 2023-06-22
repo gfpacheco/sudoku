@@ -6,19 +6,29 @@ import { CellState } from './useGameState';
 
 const numberKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-const moveKeys: Record<string, number> = {
-  // Up
-  ArrowUp: -9,
-  k: -9,
-  // Down
-  ArrowDown: 9,
-  j: 9,
-  // Left
-  ArrowLeft: -1,
-  h: -1,
-  // Right
-  ArrowRight: 1,
-  l: 1,
+enum Direction {
+  UP,
+  DOWN,
+  LEFT,
+  RIGHT,
+}
+
+const keysDirection: Record<string, Direction> = {
+  ArrowUp: Direction.UP,
+  ArrowDown: Direction.DOWN,
+  ArrowLeft: Direction.LEFT,
+  ArrowRight: Direction.RIGHT,
+  k: Direction.UP,
+  j: Direction.DOWN,
+  h: Direction.LEFT,
+  l: Direction.RIGHT,
+};
+
+const directionOffset: Record<Direction, number> = {
+  [Direction.UP]: -9,
+  [Direction.DOWN]: 9,
+  [Direction.LEFT]: -1,
+  [Direction.RIGHT]: 1,
 };
 
 export default function useGameKeyboard(
@@ -27,7 +37,7 @@ export default function useGameKeyboard(
   { setCurrentAnnotationType, annotate, clearCell }: UseAnnotationReturn,
   { undo, redo }: UseGameHistoryReturn,
 ) {
-  useDocumentListener('keydown', e => {
+  useDocumentListener('keydown', (e) => {
     const event = e as KeyboardEvent;
     const key = event.key;
 
@@ -66,9 +76,10 @@ export default function useGameKeyboard(
       return annotate(number);
     }
 
-    const moveOffset = moveKeys[key];
+    const direction = keysDirection[key];
 
-    if (moveOffset) {
+    if (direction) {
+      const moveOffset = directionOffset[direction];
       const firstSelectedCell = raw.findIndex(({ selected }) => selected);
 
       const isValidMove =
