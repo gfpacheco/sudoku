@@ -6,6 +6,21 @@ import { CellState } from './useGameState';
 
 const numberKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
+const moveKeys: Record<string, number> = {
+  // Up
+  ArrowUp: -9,
+  k: -9,
+  // Down
+  ArrowDown: 9,
+  j: 9,
+  // Left
+  ArrowLeft: -1,
+  h: -1,
+  // Right
+  ArrowRight: 1,
+  l: 1,
+};
+
 export default function useGameKeyboard(
   raw: CellState[],
   { onCellSelect, resetSelection }: UseCellSelectionReturn,
@@ -51,17 +66,19 @@ export default function useGameKeyboard(
       return annotate(number);
     }
 
-    if (key.startsWith('Arrow')) {
+    const moveOffset = moveKeys[key];
+
+    if (moveOffset) {
       const firstSelectedCell = raw.findIndex(({ selected }) => selected);
 
-      if (key === 'ArrowUp' && firstSelectedCell >= 9) {
-        onCellSelect(firstSelectedCell - 9, true);
-      } else if (key === 'ArrowDown' && firstSelectedCell < 72) {
-        onCellSelect(firstSelectedCell + 9, true);
-      } else if (key === 'ArrowLeft' && firstSelectedCell % 9 !== 0) {
-        onCellSelect(firstSelectedCell - 1, true);
-      } else if (key === 'ArrowRight' && firstSelectedCell % 9 !== 8) {
-        onCellSelect(firstSelectedCell + 1, true);
+      const isValidMove =
+        (moveOffset === -9 && firstSelectedCell >= 9) ||
+        (moveOffset === 9 && firstSelectedCell < 72) ||
+        (moveOffset === -1 && firstSelectedCell % 9 !== 0) ||
+        (moveOffset === 1 && firstSelectedCell % 9 !== 8);
+
+      if (isValidMove) {
+        onCellSelect(firstSelectedCell + moveOffset, true);
       }
     }
   });
